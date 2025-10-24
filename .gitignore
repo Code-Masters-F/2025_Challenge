@@ -15,6 +15,3 @@ target/
 # OS / IDE system files
 .DS_Store
 Thumbs.db
-
-# para não subir o login para o github
-src/main/java/br/com/fiap/factory/ConnectionFactory.java
