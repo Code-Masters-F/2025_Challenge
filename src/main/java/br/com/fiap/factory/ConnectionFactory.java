@@ -12,8 +12,8 @@ import java.sql.Statement;
 public class ConnectionFactory {
 
     public static final String URL = "jdbc:oracle:thin:@oracle.fiap.com.br:1521:orcl";
-    public static final String USUARIO = "";
-    public static final String SENHA = "";
+    public static final String USUARIO = "rm557517";
+    public static final String SENHA = "161299";
 
     public static Connection getConnection() throws SQLException {
         Connection conn = DriverManager.getConnection(URL, USUARIO, SENHA);
