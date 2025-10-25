@@ -74,6 +74,8 @@ O sistema consiste em duas tabelas principais para armazenar os dados de comérc
 | id\_varejo | int | Chave estrangeira que referencia o comércio |
 | produto | String | Nome do produto vendido |
 | preco | Numero | Preço unitário no momento da venda |
+| unidade_de_medida | String | Unidade que se mede a quantidade vendida (Unidade, Kg, L, ml ...) |
+| quantidade | int | Quantidade vendida em uma compra |
 | data\_hora | LocalDateTime | Data e hora da venda |
 
 
