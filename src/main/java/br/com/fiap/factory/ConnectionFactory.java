@@ -17,11 +17,9 @@ public class ConnectionFactory {
 
     public static Connection getConnection() throws SQLException {
         Connection conn = DriverManager.getConnection(URL, USUARIO, SENHA);
-
         try (Statement st = conn.createStatement()) {
             st.execute("ALTER SESSION SET CURRENT_SCHEMA=" + USUARIO);
         }
-
         return conn;
     }
 }
