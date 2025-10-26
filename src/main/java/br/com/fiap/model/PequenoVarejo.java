@@ -1,16 +1,25 @@
 package br.com.fiap.model;
 
+import java.security.PrivateKey;
+
 public class PequenoVarejo {
     private int id;
     private String nome;
     private String cnpj;
+    private String cidade;
+    private String estado;
     private String endereco;
+    private String cep;
 
     public PequenoVarejo(int id, String nome, String cnpj, String endereco) {
         this.id = id;
         this.nome = nome;
         this.cnpj = cnpj;
         this.endereco = endereco;
+    }
+
+    public PequenoVarejo() {
+
     }
 
     public int getId() {
@@ -37,6 +46,21 @@ public class PequenoVarejo {
         this.cnpj = cnpj;
     }
 
+    public String getCidade() {
+        return cidade;
+    }
+
+    public void setCidade(String cidade) {
+        this.cidade = cidade;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
 
     public String getEndereco() {
         return endereco;
@@ -44,5 +68,13 @@ public class PequenoVarejo {
 
     public void setEndereco(String endereco) {
         this.endereco = endereco;
+    }
+
+    public String getCep() {
+        return cep;
+    }
+
+    public void setCep(String cep) {
+        this.cep = cep;
     }
 }
