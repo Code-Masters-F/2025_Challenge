@@ -5,6 +5,7 @@ import br.com.fiap.model.PequenoVarejo;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class PequenoVarejoDao {
@@ -24,6 +25,21 @@ public class PequenoVarejoDao {
             preparedStatement.setString(5, pequenoVarejo.getEstado());
             preparedStatement.setString(6, pequenoVarejo.getCep());
             preparedStatement.executeUpdate();
+        }
+    }
+
+    public Integer buscarIdPorNome(String nome) throws SQLException {
+        String SQL = "SELECT id FROM pequenovarejo WHERE nome = ?";
+        try (Connection conexao = ConnectionFactory.getConnection();
+             PreparedStatement preparedStatement = conexao.prepareStatement(SQL)) {
+            preparedStatement.setString(1, nome);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                return resultSet.getInt("id");
+            }
+            return null;
         }
     }
 

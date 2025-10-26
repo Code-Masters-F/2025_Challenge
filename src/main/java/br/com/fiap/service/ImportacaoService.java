@@ -1,7 +1,9 @@
 package br.com.fiap.service;
 
 import br.com.fiap.dao.PequenoVarejoDao;
+import br.com.fiap.dao.VendaDao;
 import br.com.fiap.model.PequenoVarejo;
+import br.com.fiap.model.Venda;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -46,7 +48,21 @@ public class ImportacaoService {
 
     private void importarVendas(String caminho) {
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(caminho))) {
+            VendaDao dao = new VendaDao();
+            PequenoVarejoDao varejoDao = new PequenoVarejoDao();
+            String linha;
+            bufferedReader.readLine();
+            int contador = 0;
 
+            while ((linha = bufferedReader.readLine()) != null) {
+                String[] dados = linha.split(",");
+
+                String nomeComercio = dados[0];
+                String produto = dados[1];
+                String dataHoraTexto = dados[2];
+
+                Integer idComercio = varejoDao.buscarIdPorNome()
+            }
         }
     }
 }
