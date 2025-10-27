@@ -18,7 +18,7 @@ public class VendaDao {
         try (Connection conexao = ConnectionFactory.getConnection();
              PreparedStatement preparedStatement = conexao.prepareStatement(SQL)) {
             preparedStatement.setInt(1, venda.getIdVarejo());
-            preparedStatement.setString(2, venda.getNome_produto());
+            preparedStatement.setString(2, venda.getNomeProduto());
             preparedStatement.setTimestamp(3, Timestamp.from(venda.getDataHora()));
             preparedStatement.executeUpdate();
         }

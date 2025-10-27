@@ -3,15 +3,20 @@ package br.com.fiap.service;
 import br.com.fiap.dao.PequenoVarejoDao;
 import br.com.fiap.dao.VendaDao;
 import br.com.fiap.model.PequenoVarejo;
+import br.com.fiap.model.UnidadeDeMedida;
 import br.com.fiap.model.Venda;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 public class ImportacaoService {
-    public void importarCSV(String caminho) {
+    public static void importarCSV(String caminho) {
         if (caminho.endsWith("comercios.csv")) {
             importarComercios(caminho);
         } else if (caminho.endsWith("vendas.csv")) {
@@ -21,7 +26,7 @@ public class ImportacaoService {
         }
     }
 
-    private void importarComercios(String caminho) {
+    private static void importarComercios(String caminho) {
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(caminho))) {
             PequenoVarejoDao pequenoVarejoDao = new PequenoVarejoDao();
             String linha;
@@ -46,9 +51,9 @@ public class ImportacaoService {
         }
     }
 
-    private void importarVendas(String caminho) {
+    private static void importarVendas(String caminho) {
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(caminho))) {
-            VendaDao dao = new VendaDao();
+            VendaDao vendaDao = new VendaDao();
             PequenoVarejoDao varejoDao = new PequenoVarejoDao();
             String linha;
             bufferedReader.readLine();
@@ -58,11 +63,39 @@ public class ImportacaoService {
                 String[] dados = linha.split(",");
 
                 String nomeComercio = dados[0];
-                String produto = dados[1];
+                String nomeProduto = dados[1];
                 String dataHoraTexto = dados[2];
+                BigDecimal preco = new BigDecimal(dados[3]);
+                UnidadeDeMedida unidadeDeMedida = UnidadeDeMedida.fromString(dados[4]);
+                double quantidade = Double.parseDouble(dados[5]);
 
-                Integer idComercio = varejoDao.buscarIdPorNome()
+                Instant dataHora;
+                try {
+                    dataHora = Instant.parse(dataHoraTexto);
+                } catch (Exception e) {
+                    dataHora = LocalDateTime.parse(dataHoraTexto)
+                            .atZone(ZoneId.systemDefault())
+                            .toInstant();
+                }
+
+                Integer idComercio = varejoDao.buscarIdPorNome(nomeComercio);
+
+                if (idComercio != null) {
+                    Venda venda = new Venda();
+                    venda.setIdVarejo(idComercio);
+                    venda.setNomeProduto(nomeProduto);
+                    venda.setDataHora(dataHora);
+                    venda.setPreco(preco);
+                    venda.setUnidadeDeMedida(unidadeDeMedida);
+                    venda.setQuantidade(quantidade);
+
+                    vendaDao.salvar(venda);
+                    contador++;
+                }
             }
+            System.out.println(contador + " vendas importadas com sucesso!");
+        } catch (IOException | SQLException e) {
+            System.out.println("Falha ao importar vendas: " + e.getMessage());
         }
     }
 }

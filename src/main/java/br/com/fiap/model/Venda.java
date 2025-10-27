@@ -10,6 +10,7 @@ public class Venda {
     Instant dataHora;
     private BigDecimal preco;
     private UnidadeDeMedida unidadeDeMedida;
+    private double quantidade;
 
     public int getId() {
         return id;
@@ -58,6 +59,15 @@ public class Venda {
     public void setUnidadeDeMedida(UnidadeDeMedida unidadeDeMedida) {
         this.unidadeDeMedida = unidadeDeMedida;
     }
+
+    public double getQuantidade() {
+        return quantidade;
+    }
+
+    public void setQuantidade(double quantidade) {
+        this.quantidade = quantidade;
+    }
+
 }
 
 
