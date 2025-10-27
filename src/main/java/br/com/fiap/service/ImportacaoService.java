@@ -7,6 +7,7 @@ import br.com.fiap.model.UnidadeDeMedida;
 import br.com.fiap.model.Venda;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -16,13 +17,26 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 
 public class ImportacaoService {
-    public static void importarCSV(String caminho) {
-        if (caminho.endsWith("comercios.csv")) {
-            importarComercios(caminho);
-        } else if (caminho.endsWith("vendas.csv")) {
-            importarVendas(caminho);
+    private static final String BASE_PATH = System.getProperty("user.dir")
+            + File.separator + "Sales Archive" + File.separator;
+
+
+    public static void importarCSV(String nomeArquivo) {
+        String caminhoCompleto = BASE_PATH + nomeArquivo;
+
+        File file = new File(caminhoCompleto);
+        if (!file.exists() || file.isDirectory()) {
+            System.out.println("Arquivo não encontrado em: " + caminhoCompleto);
+            return;
+        }
+
+        String nome = nomeArquivo.toLowerCase();
+        if (nome.contains("comercio")) {
+            importarComercios(caminhoCompleto);
+        } else if (nome.contains("venda")) {
+            importarVendas(caminhoCompleto);
         } else {
-            System.out.println("Tipo de arquivo não reconhecido!");
+            System.out.println("Tipo de arquivo não reconhecido: " + nomeArquivo);
         }
     }
 
