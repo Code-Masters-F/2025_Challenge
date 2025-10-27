@@ -49,7 +49,6 @@ public class MainView {
                         case 0 -> System.out.println("Voltando ao menu principal...");
                         default -> System.out.println("Opção inválida!");
                     }
-
                     break;
 
                 case 3:
