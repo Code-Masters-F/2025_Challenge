@@ -1,5 +1,6 @@
 package br.com.fiap.view;
 
+import br.com.fiap.service.EstatisticaService;
 import br.com.fiap.service.ImportacaoService;
 
 import java.util.Scanner;
@@ -24,21 +25,39 @@ public class MainView {
 
             switch (opcao) {
                 case 1:
-                    System.out.print("Digite o caminho completo do arquivo CSV: ");
+                    System.out.print("Digite o caminho do arquivo CSV (Ex: vendas.csv):   ");
                     String caminho = scanner.nextLine().trim();
                     ImportacaoService.importarCSV(caminho);
                     break;
 
                 case 2:
-                    System.out.println("📊 Estatísticas (em desenvolvimento)");
+                    System.out.println("""
+                            === Estatísticas ===
+                            1) Estatísticas  gerais
+                            2) Estatísticas por produto
+                            3) Estatísticas por região
+                            0) Voltar
+                            """);
+
+                    int escolha = scanner.nextInt();
+                    scanner.nextLine();
+
+                    switch (escolha) {
+                        case 1 -> EstatisticaService.exibirGerais();
+                        case 2 -> EstatisticaService.exibirPorProduto();
+                        case 3 -> EstatisticaService.exibirPorRegiao();
+                        case 0 -> System.out.println("Voltando ao menu principal...");
+                        default -> System.out.println("Opção inválida!");
+                    }
+
                     break;
 
                 case 3:
-                    System.out.println("🔍 Consultar comércio (em desenvolvimento)");
+                    System.out.println("Consultar comércio (em desenvolvimento)");
                     break;
 
                 case 4:
-                    System.out.println("💾 Exportar relatório (em desenvolvimento)");
+                    System.out.println("Exportar relatório (em desenvolvimento)");
                     break;
 
                 case 0:
@@ -46,7 +65,7 @@ public class MainView {
                     break;
 
                 default:
-                    System.out.println("❌ Opção inválida! Tente novamente.");
+                    System.out.println("Opção inválida! Tente novamente.");
             }
         } while (opcao != 0);
 
