@@ -33,7 +33,7 @@ public class MainView {
                 case 2:
                     System.out.println("""
                             === Estatísticas ===
-                            1) Estatísticas  gerais
+                            1) Estatísticas gerais
                             2) Estatísticas por produto
                             3) Estatísticas por região
                             0) Voltar

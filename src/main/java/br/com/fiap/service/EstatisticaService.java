@@ -2,55 +2,108 @@ package br.com.fiap.service;
 
 import br.com.fiap.factory.ConnectionFactory;
 
-import javax.xml.transform.Result;
+
+import java.math.BigDecimal;
 import java.sql.*;
 
 public class EstatisticaService {
 
     public static void exibirGerais() {
+        final String SQL_TOTAL_VENDAS = "SELECT COUNT(*) FROM venda";
+        final String SQL_TOTAL_FATURAMENTO = "SELECT SUM(preco * quantidade) FROM venda";
+        final String SQL_TOTAL_COMERCIOS = "SELECT COUNT(DISTINCT id_varejo) FROM venda";
+
         try (Connection conexao = ConnectionFactory.getConnection()) {
-            Statement stmt = conexao.createStatement();
 
-            ResultSet resultSet1 = stmt.executeQuery("SELECT COUNT(*) FROM venda");
-            if (resultSet1.next()) {
-                System.out.println("Total de vendas: " + resultSet1.getInt(1));
+            int totalVendas = 0;
+            try (PreparedStatement ps = conexao.prepareStatement(SQL_TOTAL_VENDAS);
+                 ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) totalVendas = rs.getInt(1);
             }
 
-            ResultSet resultSet2 = stmt.executeQuery("SELECT SUM(preco_unitario * quantidade) FROM venda");
-            if (resultSet2.next()) {
-                System.out.println("Faturamento total: R$ " + resultSet2.getBigDecimal(1));
+            if (totalVendas == 0) {
+                System.out.println("""
+            Nenhum dado encontrado.
+            Importe os arquivos CSV de comércios e vendas antes de visualizar as estatísticas.
+            """);
+                return;
             }
 
-            ResultSet resultSet3 = stmt.executeQuery("SELECT COUNT(DISTINCT id_varejo) FROM venda");
-            if (resultSet3.next()) {
-                System.out.println("Total de comércios com vendas: " + resultSet3.getInt(1));
+            BigDecimal faturamento = BigDecimal.ZERO;
+            try (PreparedStatement ps = conexao.prepareStatement(SQL_TOTAL_FATURAMENTO);
+                 ResultSet rs = ps.executeQuery()) {
+                if (rs.next() && rs.getBigDecimal(1) != null) {
+                    faturamento = rs.getBigDecimal(1);
+                }
             }
+
+            int totalComercios = 0;
+            try (PreparedStatement ps = conexao.prepareStatement(SQL_TOTAL_COMERCIOS);
+                 ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) totalComercios = rs.getInt(1);
+            }
+
+            System.out.println("""
+            === Estatísticas Gerais ===
+            Total de vendas: %d
+            Faturamento total: R$ %.2f
+            Total de comércios com vendas: %d
+            """.formatted(totalVendas, faturamento, totalComercios));
+
         } catch (SQLException e) {
             System.out.println("Erro ao gerar estatísticas gerais: " + e.getMessage());
         }
     }
 
-
     public static void exibirPorProduto() {
         final String SQL = """
-                SELECT nome_produto, SUM(quantidade) AS total_vendida,
-                    SUM(preco_unitario * quantidade) AS faturamento
-                FROM venda
-                GROUP BY nome_produto
-                ORDER BY faturamento DESC
-                """;
+            SELECT nome_produto, SUM(quantidade) AS total_vendida,
+                   SUM(preco_unitario * quantidade) AS faturamento
+            FROM venda
+            GROUP BY nome_produto
+            ORDER BY faturamento DESC
+            """;
 
-        try (Connection conexao = ConnectionFactory.getConnection();
-             PreparedStatement preparedStatement = conexao.prepareStatement(SQL)) {
+        final String SQL_COUNT = "SELECT COUNT(*) FROM venda";
 
-            ResultSet resultSet = preparedStatement.executeQuery();
-            System.out.println("=== Estatísticas por Produto ===");
-            while (resultSet.next()) {
-                System.out.printf("🛒 %-25s | Qtde: %-5d | Faturamento: R$ %.2f%n",
-                        resultSet.getString("nome_produto"),
-                        resultSet.getInt("total_vendida"),
-                        resultSet.getDouble("faturamento"));
+        try (Connection conexao = ConnectionFactory.getConnection()) {
+
+            int totalVendas = 0;
+            try (PreparedStatement psCount = conexao.prepareStatement(SQL_COUNT);
+                 ResultSet rsCount = psCount.executeQuery()) {
+                if (rsCount.next()) totalVendas = rsCount.getInt(1);
             }
+
+            if (totalVendas == 0) {
+                System.out.println("""
+            Nenhum dado encontrado.
+            Importe os arquivos CSV de comércios e vendas antes de visualizar as estatísticas.
+            """);
+                return;
+            }
+
+            try (PreparedStatement ps = conexao.prepareStatement(SQL);
+                 ResultSet rs = ps.executeQuery()) {
+
+                System.out.println("=== Estatísticas por Produto ===");
+
+                boolean temResultados = false;
+                while (rs.next()) {
+                    temResultados = true;
+                    System.out.printf("🛒 %-25s | Qtde: %-5d | Faturamento: R$ %.2f%n",
+                            rs.getString("nome_produto"),
+                            rs.getInt("total_vendida"),
+                            rs.getDouble("faturamento"));
+                }
+
+                if (!temResultados) {
+                    System.out.println("""
+                Nenhum dado encontrado.
+                Certifique-se de que o arquivo de vendas foi importado corretamente.
+                """);
+                }
+            }
+
         } catch (SQLException e) {
             System.out.println("Erro ao gerar estatísticas por produto: " + e.getMessage());
         }
@@ -58,27 +111,57 @@ public class EstatisticaService {
 
     public static void exibirPorRegiao() {
         final String SQL = """
-                SELECT pv.cidade, SUM(v.preco_unitario * v.quantidade) AS total
-                FROM venda v
-                JOIN pequenovarejo pv ON v.id_varejo = pv.id
-                GROUP BY pv.cidade
-                ORDER BY total DESC
-                """;
-        try (Connection conexao = ConnectionFactory.getConnection();
-            PreparedStatement preparedStatement = conexao.prepareStatement(SQL)) {
-            ResultSet resultSet = preparedStatement.executeQuery();
+            SELECT pv.cidade, SUM(v.preco_unitario * v.quantidade) AS total
+            FROM venda v
+            JOIN pequenovarejo pv ON v.id_varejo = pv.id
+            GROUP BY pv.cidade
+            ORDER BY total DESC
+            """;
 
-            System.out.println("=== Estatísticas por Região ===");
-            while (resultSet.next()) {
-                System.out.printf("🏙️ %-20s | Faturamento: R$ %.2f%n",
-                        resultSet.getString("cidade"),
-                        resultSet.getDouble("total"));
+        final String SQL_COUNT = "SELECT COUNT(*) FROM venda";
+
+        try (Connection conexao = ConnectionFactory.getConnection()) {
+
+            int totalVendas = 0;
+            try (PreparedStatement psCount = conexao.prepareStatement(SQL_COUNT);
+                 ResultSet rsCount = psCount.executeQuery()) {
+                if (rsCount.next()) totalVendas = rsCount.getInt(1);
+            }
+
+            if (totalVendas == 0) {
+                System.out.println("""
+            Nenhum dado encontrado.
+            Importe os arquivos CSV de comércios e vendas antes de visualizar as estatísticas.
+            """);
+                return;
+            }
+
+            try (PreparedStatement ps = conexao.prepareStatement(SQL);
+                 ResultSet rs = ps.executeQuery()) {
+
+                System.out.println("=== Estatísticas por Região ===");
+
+                boolean temResultados = false;
+                while (rs.next()) {
+                    temResultados = true;
+                    System.out.printf("%-20s | Faturamento: R$ %.2f%n",
+                            rs.getString("cidade"),
+                            rs.getDouble("total"));
+                }
+
+                if (!temResultados) {
+                    System.out.println("""
+                Nenhum dado encontrado.
+                Certifique-se de que os comércios e as vendas estão corretamente relacionados.
+                """);
+                }
             }
 
         } catch (SQLException e) {
             System.out.println("Erro ao gerar estatísticas por região: " + e.getMessage());
         }
     }
+
 
 
 
