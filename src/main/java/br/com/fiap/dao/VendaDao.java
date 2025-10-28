@@ -26,7 +26,7 @@ public class VendaDao {
         String sql = """
                 SELECT COUNT(*) AS total_vendas
                 FROM Venda
-                WHERE id_varejo = ?;
+                WHERE id_varejo = ?
                 """;
 
         try(Connection conexao = ConnectionFactory.getConnection();

@@ -170,13 +170,14 @@ public class EstatisticaService {
 
         try {
             PequenoVarejo pqnVarejo = pequenoVarejoDao.istanciarPorId(id);
-            System.out.println("=== Dados do comércio: " + pqnVarejo.getNome() + " ===");
+            System.out.println(System.lineSeparator() + "---- " + pqnVarejo.getNome() + " ----");
             System.out.println("CNPJ: " + pqnVarejo.getCnpj() + ", CEP: " + pqnVarejo.getCep());
-            System.out.println("Endereço: " + pqnVarejo.getCidade() + "-" + pqnVarejo.getEstado() + ", " + pqnVarejo.getEndereco());
+            System.out.println("Endereço: " + pqnVarejo.getCidade() + " - " + pqnVarejo.getEstado() + ", " + pqnVarejo.getEndereco());
 
-            System.out.println("=== Estatísticas ===");
+            System.out.println(System.lineSeparator() + "---- Estatísticas ----");
             System.out.println("Total de vendas: " + vendaDao.totalVendasPorIdVarejo(id));
 
+            System.out.println(System.lineSeparator());
         } catch (SQLException e) {
             System.err.println(e.getMessage());
         }

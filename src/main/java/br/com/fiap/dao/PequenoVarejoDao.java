@@ -57,7 +57,7 @@ public class PequenoVarejoDao {
             int id = result.getInt("id");
             String nome = result.getString("nome");
             String cnpj = result.getString("CNPJ");
-            String endereco = result.getString("Edereco");
+            String endereco = result.getString("endereco");
             String cidade = result.getString("cidade");
             String estado = result.getString("estado");
             String cep = result.getString("CEP");
