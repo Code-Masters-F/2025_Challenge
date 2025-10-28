@@ -110,7 +110,6 @@ public class ImportacaoService {
             System.out.println(contador + " vendas importadas com sucesso!");
         } catch (IOException | SQLException e) {
             System.out.println("Falha ao importar vendas: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 }

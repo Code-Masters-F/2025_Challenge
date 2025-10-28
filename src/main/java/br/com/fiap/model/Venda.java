@@ -9,7 +9,7 @@ public class Venda {
     private String nome_produto;
     private double tamanhoEmbalagem;
     Instant dataHora;
-    private BigDecimal preco;
+    private BigDecimal precoUnitario;
     private UnidadeDeMedida unidadeDeMedida;
     private double quantidade;
 
@@ -54,11 +54,11 @@ public class Venda {
     }
 
     public BigDecimal getPrecoUnitario() {
-        return preco;
+        return precoUnitario;
     }
 
     public void setPrecoUnitario(BigDecimal preco) {
-        this.preco = preco;
+        this.precoUnitario = preco;
     }
 
     public UnidadeDeMedida getUnidadeDeMedida() {

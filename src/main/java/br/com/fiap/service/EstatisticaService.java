@@ -42,12 +42,12 @@ public class EstatisticaService {
                 if (rs.next()) totalComercios = rs.getInt(1);
             }
 
-            System.out.println("""
-            === Estatísticas Gerais ===
-            Total de vendas: %d
-            Faturamento total: R$ %.2f
-            Total de comércios com vendas: %d
-            """.formatted(totalVendas, faturamento, totalComercios));
+            System.out.printf("""
+                    === Estatísticas Gerais ===
+                    Total de vendas: %d
+                    Faturamento total: R$ %.2f
+                    Total de comércios com vendas: %d
+                    %n""", totalVendas, faturamento, totalComercios);
 
         } catch (SQLException e) {
             System.out.println("Erro ao gerar estatísticas gerais: " + e.getMessage());
