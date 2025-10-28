@@ -7,6 +7,7 @@ public class Venda {
     private int id;
     private int idVarejo;
     private String nome_produto;
+    private double tamanhoEmbalagem;
     Instant dataHora;
     private BigDecimal preco;
     private UnidadeDeMedida unidadeDeMedida;
@@ -36,6 +37,14 @@ public class Venda {
         this.nome_produto = nome_produto;
     }
 
+    public double getTamanhoEmbalagem() {
+        return tamanhoEmbalagem;
+    }
+
+    public void setTamanhoEmbalagem(double tamanhoEmbalagem) {
+        this.tamanhoEmbalagem = tamanhoEmbalagem;
+    }
+
     public Instant getDataHora() {
         return dataHora;
     }
@@ -44,11 +53,11 @@ public class Venda {
         this.dataHora = dataHora;
     }
 
-    public BigDecimal getPreco() {
+    public BigDecimal getPrecoUnitario() {
         return preco;
     }
 
-    public void setPreco(BigDecimal preco) {
+    public void setPrecoUnitario(BigDecimal preco) {
         this.preco = preco;
     }
 

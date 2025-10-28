@@ -15,6 +15,9 @@ import java.sql.SQLException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+
+import static utils.ImportacaoUtils.*;
 
 public class ImportacaoService {
     private static final String BASE_PATH = System.getProperty("user.dir")
@@ -76,21 +79,17 @@ public class ImportacaoService {
             while ((linha = bufferedReader.readLine()) != null) {
                 String[] dados = linha.split(",");
 
-                String nomeComercio = dados[0];
-                String nomeProduto = dados[1];
-                String dataHoraTexto = dados[2];
-                BigDecimal preco = new BigDecimal(dados[3]);
-                UnidadeDeMedida unidadeDeMedida = UnidadeDeMedida.fromString(dados[4]);
-                double quantidade = Double.parseDouble(dados[5]);
+                String nomeComercio = dados[0].trim();
+                String nomeProduto = dados[1].trim();
+                double tamanhoEmbalagem = parseDoubleSafe(dados[2]);
+                UnidadeDeMedida unidadeDeMedida = UnidadeDeMedida.fromString(dados[3].trim());
+                double quantidade = parseDoubleSafe(dados[4]);
+                BigDecimal precoUnitario = parseBigDecimalSafe(dados[5]);
 
-                Instant dataHora;
-                try {
-                    dataHora = Instant.parse(dataHoraTexto);
-                } catch (Exception e) {
-                    dataHora = LocalDateTime.parse(dataHoraTexto)
-                            .atZone(ZoneId.systemDefault())
-                            .toInstant();
-                }
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                LocalDateTime localDateTime = LocalDateTime.parse(dados[6].trim(), formatter);
+
+                Instant dataHora = localDateTime.atZone(ZoneId.of("UTC")).toInstant();
 
                 Integer idComercio = varejoDao.buscarIdPorNome(nomeComercio);
 
@@ -98,10 +97,11 @@ public class ImportacaoService {
                     Venda venda = new Venda();
                     venda.setIdVarejo(idComercio);
                     venda.setNomeProduto(nomeProduto);
-                    venda.setDataHora(dataHora);
-                    venda.setPreco(preco);
+                    venda.setTamanhoEmbalagem(tamanhoEmbalagem);
                     venda.setUnidadeDeMedida(unidadeDeMedida);
                     venda.setQuantidade(quantidade);
+                    venda.setPrecoUnitario(precoUnitario);
+                    venda.setDataHora(dataHora);
 
                     vendaDao.salvar(venda);
                     contador++;
@@ -110,6 +110,7 @@ public class ImportacaoService {
             System.out.println(contador + " vendas importadas com sucesso!");
         } catch (IOException | SQLException e) {
             System.out.println("Falha ao importar vendas: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 }
