@@ -1,6 +1,9 @@
 package br.com.fiap.service;
 
+import br.com.fiap.dao.PequenoVarejoDao;
+import br.com.fiap.dao.VendaDao;
 import br.com.fiap.factory.ConnectionFactory;
+import br.com.fiap.model.PequenoVarejo;
 
 import java.math.BigDecimal;
 import java.sql.*;
@@ -161,7 +164,24 @@ public class EstatisticaService {
         }
     }
 
+    public static void consultarComercioPorId(int id) {
+        PequenoVarejoDao pequenoVarejoDao = new PequenoVarejoDao();
+        VendaDao vendaDao = new VendaDao();
 
+        try {
+            PequenoVarejo pqnVarejo = pequenoVarejoDao.istanciarPorId(id);
+            System.out.println("=== Dados do comércio: " + pqnVarejo.getNome() + " ===");
+            System.out.println("CNPJ: " + pqnVarejo.getCnpj() + ", CEP: " + pqnVarejo.getCep());
+            System.out.println("Endereço: " + pqnVarejo.getCidade() + "-" + pqnVarejo.getEstado() + ", " + pqnVarejo.getEndereco());
+
+            System.out.println("=== Estatísticas ===");
+            System.out.println("Total de vendas: " + vendaDao.totalVendasPorIdVarejo(id));
+
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+
+    }
 
 
 

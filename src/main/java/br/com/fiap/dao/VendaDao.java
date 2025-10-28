@@ -3,10 +3,7 @@ package br.com.fiap.dao;
 import br.com.fiap.factory.ConnectionFactory;
 import br.com.fiap.model.Venda;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.sql.*;
 
 public class VendaDao {
 
@@ -24,4 +21,24 @@ public class VendaDao {
         }
     }
 
+    public int totalVendasPorIdVarejo(int idComercio) throws SQLException {
+
+        String sql = """
+                SELECT COUNT(*) AS total_vendas
+                FROM Venda
+                WHERE id_varejo = ?;
+                """;
+
+        try(Connection conexao = ConnectionFactory.getConnection();
+            PreparedStatement stm = conexao.prepareStatement(sql)) {
+
+            stm.setInt(1, idComercio);
+
+            ResultSet result = stm.executeQuery();
+            if(!result.next())
+                return 0;
+
+            return result.getInt(1);
+        }
+    }
 }
