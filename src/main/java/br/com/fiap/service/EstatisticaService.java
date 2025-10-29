@@ -8,6 +8,9 @@ import br.com.fiap.model.Venda;
 
 import java.math.BigDecimal;
 import java.sql.*;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class EstatisticaService {
@@ -186,6 +189,15 @@ public class EstatisticaService {
                 System.out.print(listaVendas.get(i).getNomeProduto() + " " + listaVendas.get(i).getTamanhoEmbalagem() +
                         listaVendas.get(i).getUnidadeDeMedida().name());
             }
+
+            Venda ultimaVenda = vendaDao.ultimaVendaPorVarejo(id);
+            ZoneId fusoLocal = ZoneId.systemDefault();
+            ZonedDateTime dataHoraComFuso = ultimaVenda.getDataHora().atZone(fusoLocal);
+            DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+            String dataFormatada = dataHoraComFuso.format(formatador);
+            System.out.print(System.lineSeparator());
+            System.out.print("Última venda: " + ultimaVenda.getNomeProduto() + " " + ultimaVenda.getTamanhoEmbalagem() +
+                    ultimaVenda.getUnidadeDeMedida().name() + " " + dataFormatada);
 
             System.out.println(System.lineSeparator());
         } catch (SQLException e) {

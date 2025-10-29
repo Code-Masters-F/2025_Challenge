@@ -79,4 +79,37 @@ public class VendaDao {
         }
         return listaVendas;
     }
+
+    public Venda ultimaVendaPorVarejo (int idComercio) throws SQLException {
+        String sql = """
+        SELECT *
+        FROM Venda WHERE id_varejo = ?
+        ORDER BY data_hora DESC
+        FETCH FIRST 1 ROW ONLY
+        """;
+
+        try(Connection conexao = ConnectionFactory.getConnection();
+            PreparedStatement stm = conexao.prepareStatement(sql)) {
+            stm.setInt(1, idComercio);
+            ResultSet result = stm.executeQuery();
+
+            if(result.next()) {
+
+                int id = result.getInt("id");
+                int idVarejo = result.getInt("id_varejo");
+                String nomeProduto = result.getString("nome_produto");
+                double tamanhoEmbalagem = result.getDouble("Tamanho_embalagem");
+                BigDecimal preco = result.getBigDecimal("preco_unitario");
+                String unidadeDeMedida = result.getString("unidade_de_medida");
+                double quantidade = result.getDouble("quantidade");
+
+                java.sql.Timestamp ts = result.getTimestamp("data_hora");
+                Instant dataSemFuso = (ts != null) ? ts.toInstant() : null;
+
+                return new Venda(id, idVarejo, nomeProduto, tamanhoEmbalagem, dataSemFuso, preco,
+                        UnidadeDeMedida.fromString(unidadeDeMedida), quantidade);
+            } else
+                throw new SQLException("Varejo não encontrado");
+        }
+    }
 }
