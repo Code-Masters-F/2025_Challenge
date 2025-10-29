@@ -2,8 +2,13 @@ package br.com.fiap.dao;
 
 import br.com.fiap.factory.ConnectionFactory;
 import br.com.fiap.model.Venda;
+import br.com.fiap.model.UnidadeDeMedida;
 
+import java.math.BigDecimal;
 import java.sql.*;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 public class VendaDao {
 
@@ -39,6 +44,30 @@ public class VendaDao {
                 return 0;
 
             return result.getInt(1);
+        }
+    }
+
+    public List<Venda> vendasPorIdVarejo (int idComercio) throws SQLException{
+        String sql = "SELECT * FROM Venda WHERE id_varejo = ?";
+        List<Venda> listaVendas = new ArrayList<>();
+
+        try(Connection conexao = ConnectionFactory.getConnection();
+            PreparedStatement stm = conexao.prepareStatement(sql)) {
+
+            ResultSet result = stm.executeQuery();
+            //int id, int idVarejo, String nome_produto, Instant dataHora, BigDecimal preco,
+            // UnidadeDeMedida unidadeDeMedida, double quantidade
+            while (!result.next()) {
+                int id = result.getInt("id");
+                int idVarejo = result.getInt("id_varejo");
+                String nomeProduto = result.getString("nome_produto");
+                BigDecimal tamanhoEmbalagem = result.getBigDecimal("Tamanho_embalagem");
+                BigDecimal preco = result.getBigDecimal("preco_unitario");
+                String unidadeDeMedida = result.getString("unidade_de_medida");
+                BigDecimal quantidade = result.getBigDecimal("quantidade");
+                Instant dataSemFuso = result.getObject("data_hora", Instant.class);
+            }
+
         }
     }
 }
