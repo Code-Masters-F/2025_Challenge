@@ -12,7 +12,7 @@ public class EstatisticaService {
 
     public static void exibirGerais() {
         final String SQL_TOTAL_VENDAS = "SELECT COUNT(*) FROM venda";
-        final String SQL_TOTAL_FATURAMENTO = "SELECT SUM(preco * quantidade) FROM venda";
+        final String SQL_TOTAL_FATURAMENTO = "SELECT SUM(preco_unitario * quantidade) FROM venda";
         final String SQL_TOTAL_COMERCIOS = "SELECT COUNT(DISTINCT id_varejo) FROM venda";
 
         try (Connection conexao = ConnectionFactory.getConnection()) {
@@ -45,12 +45,12 @@ public class EstatisticaService {
                 if (rs.next()) totalComercios = rs.getInt(1);
             }
 
-            System.out.println("""
-            === Estatísticas Gerais ===
-            Total de vendas: %d
-            Faturamento total: R$ %.2f
-            Total de comércios com vendas: %d
-            """.formatted(totalVendas, faturamento, totalComercios));
+            System.out.printf("""
+                    === Estatísticas Gerais ===
+                    Total de vendas: %d
+                    Faturamento total: R$ %.2f
+                    Total de comércios com vendas: %d
+                    %n""", totalVendas, faturamento, totalComercios);
 
         } catch (SQLException e) {
             System.out.println("Erro ao gerar estatísticas gerais: " + e.getMessage());
@@ -59,7 +59,7 @@ public class EstatisticaService {
 
     public static void exibirPorProduto() {
         final String SQL = """
-            SELECT nome_produto, SUM(quantidade) AS total_vendida,
+            SELECT nome_produto, SUM(quantidade) AS total_vendido,
                    SUM(preco_unitario * quantidade) AS faturamento
             FROM venda
             GROUP BY nome_produto
@@ -94,7 +94,7 @@ public class EstatisticaService {
                     temResultados = true;
                     System.out.printf("🛒 %-25s | Qtde: %-5d | Faturamento: R$ %.2f%n",
                             rs.getString("nome_produto"),
-                            rs.getInt("total_vendida"),
+                            rs.getInt("total_vendido"),
                             rs.getDouble("faturamento"));
                 }
 
