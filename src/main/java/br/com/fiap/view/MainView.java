@@ -58,41 +58,22 @@ public class MainView {
                     break;
 
                 case 4:
-                    // EXPORTAR RELATÓRIO
                     System.out.println("""
-                        === EXPORTAR RELATÓRIO ===");
-                        1) Relatório Geral
-                        2) Relatório por Comércio
-                        Escolha: """);
+                            === EXPORTAR RELATÓRIO ===
+                            1) Relatório Geral
+                            2) Relatório por Comércio
+                            0) Voltar
+                            """);
+
                     int tipo = scanner.nextInt();
                     scanner.nextLine();
 
-                    System.out.println("\n1) TXT  2) CSV");
-                    System.out.print("Formato: ");
-                    int fmt = scanner.nextInt();
-                    scanner.nextLine();
-                    String formato = (fmt == 1) ? "txt" : "csv";
-
-                    try {
-                        String arquivo;
-                        if (tipo == 1) {
-                            arquivo = relatorioService.exportarRelatorioGeral(formato);
-                            System.out.println("\n✓ Relatório geral exportado!");
-                        } else {
-                            System.out.print("ID do comércio: ");
-                            int id = scanner.nextInt();
-                            scanner.nextLine();
-                            arquivo = relatorioService.exportarRelatorioPorComercio(id, formato);
-                            System.out.println("\n✓ Relatório do comércio exportado!");
-                        }
-                        System.out.println("Arquivo: " + arquivo + "\n");
-                    } catch (Exception e) {
-                        System.out.println("✗ Erro: " + e.getMessage());
+                    switch (tipo) {
+                        case 1 -> RelatorioService.exportarRelatorioGeral();
+                        case 2 -> RelatorioService.exportarRelatorioPorComercio(scanner);
+                        case 0 -> System.out.println("Voltando ao menu principal...");
+                        default -> System.out.println("Opção inválida!");
                     }
-                    break;
-
-                case 0:
-                    System.out.println("Saindo do sistema...");
                     break;
 
                 default:
