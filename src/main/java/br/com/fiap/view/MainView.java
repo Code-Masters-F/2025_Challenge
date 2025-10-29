@@ -44,7 +44,12 @@ public class MainView {
                     break;
 
                 case 3:
-                    System.out.println("Consultar comércio (em desenvolvimento)");
+                    limparTela();
+                    System.out.print("Digite o id do pequeno varejo: ");
+                    int idComercio = scanner.nextInt();
+                    scanner.nextLine();
+
+                    EstatisticaService.consultarComercioPorId(idComercio);
                     break;
 
                 case 4:

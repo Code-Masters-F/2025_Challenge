@@ -13,6 +13,22 @@ public class Venda {
     private UnidadeDeMedida unidadeDeMedida;
     private double quantidade;
 
+    public Venda(int id, int idVarejo, String nome_produto, double tamanhoEmbalagem, Instant dataHora,
+                 BigDecimal precoUnitario, UnidadeDeMedida unidadeDeMedida, double quantidade) {
+        this.id = id;
+        this.idVarejo = idVarejo;
+        this.nome_produto = nome_produto;
+        this.tamanhoEmbalagem = tamanhoEmbalagem;
+        this.dataHora = dataHora;
+        this.precoUnitario = precoUnitario;
+        this.unidadeDeMedida = unidadeDeMedida;
+        this.quantidade = quantidade;
+    }
+
+    public Venda() {
+
+    }
+
     public int getId() {
         return id;
     }

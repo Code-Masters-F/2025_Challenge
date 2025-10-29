@@ -58,21 +58,25 @@ public class VendaDao {
 
         try(Connection conexao = ConnectionFactory.getConnection();
             PreparedStatement stm = conexao.prepareStatement(sql)) {
-
+            stm.setInt(1, idComercio);
             ResultSet result = stm.executeQuery();
-            //int id, int idVarejo, String nome_produto, Instant dataHora, BigDecimal preco,
-            // UnidadeDeMedida unidadeDeMedida, double quantidade
-            while (!result.next()) {
+
+            while (result.next()) {
                 int id = result.getInt("id");
                 int idVarejo = result.getInt("id_varejo");
                 String nomeProduto = result.getString("nome_produto");
-                BigDecimal tamanhoEmbalagem = result.getBigDecimal("Tamanho_embalagem");
+                double tamanhoEmbalagem = result.getDouble("Tamanho_embalagem");
                 BigDecimal preco = result.getBigDecimal("preco_unitario");
                 String unidadeDeMedida = result.getString("unidade_de_medida");
-                BigDecimal quantidade = result.getBigDecimal("quantidade");
-                Instant dataSemFuso = result.getObject("data_hora", Instant.class);
-            }
+                double quantidade = result.getDouble("quantidade");
 
+                java.sql.Timestamp ts = result.getTimestamp("data_hora");
+                Instant dataSemFuso = (ts != null) ? ts.toInstant() : null;
+
+                listaVendas.add(new Venda(id, idVarejo, nomeProduto, tamanhoEmbalagem, dataSemFuso, preco,
+                        UnidadeDeMedida.fromString(unidadeDeMedida), quantidade));
+            }
         }
+        return listaVendas;
     }
 }

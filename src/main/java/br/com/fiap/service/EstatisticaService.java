@@ -4,9 +4,11 @@ import br.com.fiap.dao.PequenoVarejoDao;
 import br.com.fiap.dao.VendaDao;
 import br.com.fiap.factory.ConnectionFactory;
 import br.com.fiap.model.PequenoVarejo;
+import br.com.fiap.model.Venda;
 
 import java.math.BigDecimal;
 import java.sql.*;
+import java.util.List;
 
 public class EstatisticaService {
 
@@ -174,8 +176,16 @@ public class EstatisticaService {
             System.out.println("CNPJ: " + pqnVarejo.getCnpj() + ", CEP: " + pqnVarejo.getCep());
             System.out.println("Endereço: " + pqnVarejo.getCidade() + " - " + pqnVarejo.getEstado() + ", " + pqnVarejo.getEndereco());
 
-            System.out.println(System.lineSeparator() + "---- Estatísticas ----");
+            System.out.println("---- Estatísticas ----");
             System.out.println("Total de vendas: " + vendaDao.totalVendasPorIdVarejo(id));
+            List<Venda> listaVendas = vendaDao.vendasPorIdVarejo(id);
+            System.out.print("Produtos vendidos: ");
+            for (int i = 0; i < listaVendas.size(); i++) {
+                if (i != 0)
+                    System.out.print(", ");
+                System.out.print(listaVendas.get(i).getNomeProduto() + " " + listaVendas.get(i).getTamanhoEmbalagem() +
+                        listaVendas.get(i).getUnidadeDeMedida().name());
+            }
 
             System.out.println(System.lineSeparator());
         } catch (SQLException e) {
