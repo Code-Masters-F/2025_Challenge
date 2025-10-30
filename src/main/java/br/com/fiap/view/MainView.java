@@ -73,6 +73,10 @@ public class MainView {
                     }
                     break;
 
+                case 0:
+                    System.out.println("Saíndo...");
+                    break;
+
                 default:
                     System.out.println("Opção inválida! Tente novamente.");
             }
