@@ -11,11 +11,14 @@ public class PequenoVarejo {
     private String endereco;
     private String cep;
 
-    public PequenoVarejo(int id, String nome, String cnpj, String endereco) {
+    public PequenoVarejo(int id, String nome, String cnpj, String cidade, String estado, String endereco, String cep) {
         this.id = id;
         this.nome = nome;
         this.cnpj = cnpj;
+        this.cidade = cidade;
+        this.estado = estado;
         this.endereco = endereco;
+        this.cep = cep;
     }
 
     public PequenoVarejo() {

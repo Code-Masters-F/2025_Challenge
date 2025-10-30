@@ -6,40 +6,32 @@ import br.com.fiap.service.RelatorioService;
 
 import java.util.Scanner;
 
+import static utils.MenuUtils.*;
+
 public class MainView {
     public static void main(String[] args) {
+        System.setProperty("file.encoding", "UTF-8");
         Scanner scanner = new Scanner(System.in);
         RelatorioService relatorioService = new RelatorioService();
         int opcao;
 
         do {
-            System.out.println("""
-                === Sistema de Coleta e Análise de Vendas ===
-                1) Importar arquivo CSV
-                2) Exibir estatísticas
-                3) Consultar por ID de comércio
-                4) Exportar relatório (.txt/.csv)
-                0) Sair
-                """);
-
+            limparTela();
+            System.out.println(MENU_PRINCIPAL);
             opcao = scanner.nextInt();
             scanner.nextLine();
 
             switch (opcao) {
                 case 1:
-                    System.out.print("Digite o caminho do arquivo CSV (Ex: vendas.csv): ");
+                    limparTela();
+                    System.out.print("Digite o caminho do arquivo CSV (Ex: vendas.csv):   ");
                     String caminho = scanner.nextLine().trim();
                     ImportacaoService.importarCSV(caminho);
                     break;
 
                 case 2:
-                    System.out.println("""
-                            === Estatísticas ===
-                            1) Estatísticas gerais
-                            2) Estatísticas por produto
-                            3) Estatísticas por região
-                            0) Voltar
-                            """);
+                    limparTela();
+                    System.out.println(MENU_EXIBIR_ESTATISTICAS);
 
                     int escolha = scanner.nextInt();
                     scanner.nextLine();
@@ -54,7 +46,12 @@ public class MainView {
                     break;
 
                 case 3:
-                    System.out.println("Consultar comércio (em desenvolvimento)");
+                    limparTela();
+                    System.out.print("Digite o id do pequeno varejo: ");
+                    int idComercio = scanner.nextInt();
+                    scanner.nextLine();
+
+                    EstatisticaService.consultarComercioPorId(idComercio);
                     break;
 
                 case 4:

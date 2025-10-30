@@ -43,5 +43,27 @@ public class PequenoVarejoDao {
         }
     }
 
+    public PequenoVarejo istanciarPorId(int idComercio) throws SQLException {
+        String sql = "SELECT * FROM PequenoVarejo WHERE id = ?";
+
+        try(Connection conexao = ConnectionFactory.getConnection();
+            PreparedStatement stm = conexao.prepareStatement(sql)) {
+            stm.setInt(1, idComercio);
+
+            ResultSet result = stm.executeQuery();
+            if (!result.next())
+                throw new SQLException("Entidade não encontrada");
+
+            int id = result.getInt("id");
+            String nome = result.getString("nome");
+            String cnpj = result.getString("CNPJ");
+            String endereco = result.getString("endereco");
+            String cidade = result.getString("cidade");
+            String estado = result.getString("estado");
+            String cep = result.getString("CEP");
+
+            return new PequenoVarejo(id, nome, cnpj, cidade, estado, endereco, cep);
+        }
+    }
 
 }

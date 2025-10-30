@@ -7,10 +7,27 @@ public class Venda {
     private int id;
     private int idVarejo;
     private String nome_produto;
+    private double tamanhoEmbalagem;
     Instant dataHora;
-    private BigDecimal preco;
+    private BigDecimal precoUnitario;
     private UnidadeDeMedida unidadeDeMedida;
     private double quantidade;
+
+    public Venda(int id, int idVarejo, String nome_produto, double tamanhoEmbalagem, Instant dataHora,
+                 BigDecimal precoUnitario, UnidadeDeMedida unidadeDeMedida, double quantidade) {
+        this.id = id;
+        this.idVarejo = idVarejo;
+        this.nome_produto = nome_produto;
+        this.tamanhoEmbalagem = tamanhoEmbalagem;
+        this.dataHora = dataHora;
+        this.precoUnitario = precoUnitario;
+        this.unidadeDeMedida = unidadeDeMedida;
+        this.quantidade = quantidade;
+    }
+
+    public Venda() {
+
+    }
 
     public int getId() {
         return id;
@@ -36,6 +53,14 @@ public class Venda {
         this.nome_produto = nome_produto;
     }
 
+    public double getTamanhoEmbalagem() {
+        return tamanhoEmbalagem;
+    }
+
+    public void setTamanhoEmbalagem(double tamanhoEmbalagem) {
+        this.tamanhoEmbalagem = tamanhoEmbalagem;
+    }
+
     public Instant getDataHora() {
         return dataHora;
     }
@@ -44,12 +69,12 @@ public class Venda {
         this.dataHora = dataHora;
     }
 
-    public BigDecimal getPreco() {
-        return preco;
+    public BigDecimal getPrecoUnitario() {
+        return precoUnitario;
     }
 
-    public void setPreco(BigDecimal preco) {
-        this.preco = preco;
+    public void setPrecoUnitario(BigDecimal preco) {
+        this.precoUnitario = preco;
     }
 
     public UnidadeDeMedida getUnidadeDeMedida() {
