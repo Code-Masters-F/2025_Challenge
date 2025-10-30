@@ -74,7 +74,7 @@ public class MainView {
                     break;
 
                 case 0:
-                    System.out.println("Saíndo...");
+                    System.out.println("Saindo do sistema...");
                     break;
 
                 default:
