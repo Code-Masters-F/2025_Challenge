@@ -15,3 +15,7 @@ target/
 # OS / IDE system files
 .DS_Store
 Thumbs.db
+
+# Todos os arquivos .txt e .csv que estiverem na raiz do projeto (para ignorar exportações do programa)
+/*.txt
+/*.csv
