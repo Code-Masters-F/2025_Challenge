@@ -1,4 +1,4 @@
-package utils;
+package br.com.fiap.utils;
 
 public class MenuUtils {
     public static final String MENU_PRINCIPAL = """

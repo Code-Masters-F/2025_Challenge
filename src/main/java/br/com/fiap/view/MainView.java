@@ -6,7 +6,7 @@ import br.com.fiap.service.RelatorioService;
 
 import java.util.Scanner;
 
-import static utils.MenuUtils.*;
+import static br.com.fiap.utils.MenuUtils.*;
 
 public class MainView {
     public static void main(String[] args) {

@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
-import static utils.ImportacaoUtils.*;
+import static br.com.fiap.utils.ImportacaoUtils.*;
 
 public class ImportacaoService {
     private static final String BASE_PATH = System.getProperty("user.dir")
