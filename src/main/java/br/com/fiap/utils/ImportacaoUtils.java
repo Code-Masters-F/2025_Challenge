@@ -1,4 +1,4 @@
-package utils;
+package br.com.fiap.utils;
 
 import java.math.BigDecimal;
 
