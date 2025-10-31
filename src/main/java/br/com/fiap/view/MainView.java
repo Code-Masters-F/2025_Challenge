@@ -12,7 +12,6 @@ public class MainView {
     public static void main(String[] args) {
         System.setProperty("file.encoding", "UTF-8");
         Scanner scanner = new Scanner(System.in);
-        RelatorioService relatorioService = new RelatorioService();
         int opcao;
 
         do {
@@ -24,7 +23,7 @@ public class MainView {
             switch (opcao) {
                 case 1:
                     limparTela();
-                    System.out.print("Digite o caminho do arquivo CSV (Ex: vendas.csv):   ");
+                    System.out.print("Digite o caminho do arquivo CSV (Ex: vendas.csv):  ");
                     String caminho = scanner.nextLine().trim();
                     System.out.println(System.lineSeparator() + "Importando...");
                     ImportacaoService.importarCSV(caminho);
