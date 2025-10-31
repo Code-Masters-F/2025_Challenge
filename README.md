@@ -54,7 +54,7 @@ O menu principal oferece as seguintes opções:
 
 O sistema consiste em duas tabelas principais para armazenar os dados de comércios e suas respectivas vendas.
 
-### Tabela: Pequeno-Varejo
+### Tabela: PequenoVarejo
 
 | Campo    | Tipo                                | Descrição              |
 | -------- | ----------------------------------- | ---------------------- |
