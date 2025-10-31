@@ -26,6 +26,7 @@ public class MainView {
                     limparTela();
                     System.out.print("Digite o caminho do arquivo CSV (Ex: vendas.csv):   ");
                     String caminho = scanner.nextLine().trim();
+                    System.out.println(System.lineSeparator() + "Importando...");
                     ImportacaoService.importarCSV(caminho);
                     break;
 
