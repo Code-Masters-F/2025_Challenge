@@ -1,9 +1,8 @@
 package br.com.fiap.utils;
 
-/**
- * Classe que centraliza todas as mensagens do sistema
- * Facilita manutenção, tradução e padronização
- */
+
+ // Classe que centraliza todas as mensagens do sistema
+
 public class Mensagens {
 
     // ========== ÍCONES ==========
@@ -22,11 +21,11 @@ public class Mensagens {
       
         """;
 
-    // ========== MENSAGENS DE NAVEGAÇÃO ==========
+    // MENSAGENS DE NAVEGAÇÃO
     public static final String VOLTAR_MENU = "\nℹ️  Voltando ao menu principal...";
     public static final String PRESSIONE_ENTER = "\nPressione ENTER para continuar...";
 
-    // ========== MENSAGENS DE ERRO - ENTRADA ==========
+    //  MENSAGENS DE ERRO - ENTRADA
     public static final String ERRO_ENTRADA_NUMERICA = """
         
         ✗ Entrada inválida!
@@ -71,7 +70,6 @@ public class Mensagens {
         O ID deve ser um número inteiro.
         """;
 
-    // ========== MENSAGENS DE ERRO - ESTATÍSTICAS ==========
     public static final String ERRO_ESTATISTICAS_GERAIS = """
         
         ✗ Erro ao exibir estatísticas gerais.
@@ -93,7 +91,6 @@ public class Mensagens {
         Verifique se o ID está correto.
         """;
 
-    // ========== MENSAGENS DE ERRO - RELATÓRIOS ==========
     public static final String ERRO_RELATORIO_GERAL = """
         
         ✗ Erro ao exportar relatório geral.
@@ -104,7 +101,7 @@ public class Mensagens {
         ✗ Erro ao exportar relatório do comércio.
         """;
 
-    // ========== MENSAGENS DE SUCESSO ==========
+    // MENSAGENS DE SUCESSO
     public static final String SUCESSO_IMPORTACAO = """
         
         ✓ Importação concluída com sucesso!
@@ -113,11 +110,7 @@ public class Mensagens {
 
     public static final String PROGRESSO_IMPORTACAO = "\n⏳ Importando arquivo...";
 
-    // ========== MÉTODOS UTILITÁRIOS ==========
 
-    /**
-     * Retorna mensagem de erro formatada com arquivo
-     */
     public static String erroFormatoArquivo(String nomeArquivo) {
         return """
         
@@ -127,16 +120,10 @@ public class Mensagens {
         """.formatted(nomeArquivo);
     }
 
-    /**
-     * Retorna mensagem de erro com detalhes técnicos
-     */
     public static String erroComDetalhes(String mensagemBase, String detalhes) {
         return mensagemBase + "Detalhes: " + detalhes + "\n";
     }
 
-    /**
-     * Retorna mensagem de erro de opção inválida com faixa
-     */
     public static String erroOpcaoInvalidaFaixa(int min, int max) {
         return """
         
