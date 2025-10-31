@@ -37,10 +37,45 @@ public class MainView {
             switch (opcao) {
                 case 1:
                     limparTela();
-                    System.out.print("Digite o caminho do arquivo CSV (Ex: vendas.csv):  ");
-                    String caminho = scanner.nextLine().trim();
-                    System.out.println(System.lineSeparator() + "Importando...");
-                    ImportacaoService.importarCSV(caminho);
+
+                    while (true) {
+                        System.out.print("Digite o caminho do arquivo CSV (Ex: vendas.csv) ou 0 para voltar: ");
+                        String caminho = scanner.nextLine().trim();
+
+                        // opção de voltar
+                        if (caminho.equals("0")) break;
+
+                        if (caminho.isEmpty()) {
+                            System.out.println(Mensagens.ERRO_CAMINHO_VAZIO);
+                            continue;
+                        }
+
+                        if (!caminho.toLowerCase().endsWith(".csv")) {
+                            System.out.println(Mensagens.erroFormatoArquivo(caminho));
+                            continue;
+                        }
+
+                        if (!Files.exists(Paths.get(caminho))) {
+                            System.out.println("✗ Arquivo não encontrado em: " + Paths.get(caminho).toAbsolutePath());
+                            continue;
+                        }
+
+                        System.out.println(System.lineSeparator() + "Importando...");
+                        try {
+                            ImportacaoService.importarCSV(caminho);
+                            System.out.println(Mensagens.SUCESSO_IMPORTACAO + "\n");
+                        } catch (Exception e) {
+                            System.out.println(Mensagens.erroComDetalhes(Mensagens.ERRO_IMPORTACAO, e.getMessage()));
+                        }
+
+                        System.out.println("Deseja importar outro arquivo?");
+                        System.out.print("Digite S para sim ou qualquer tecla para voltar ao menu: ");
+                        String resp = scanner.nextLine().trim().toUpperCase();
+
+                        if (!resp.equals("S")) break;
+
+                        System.out.println(); // espaçamento
+                    }
                     break;
 
                 case 2:

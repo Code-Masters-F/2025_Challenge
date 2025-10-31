@@ -3,18 +3,15 @@ package br.com.fiap.utils;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-/**
- * Classe que centraliza todas as mensagens do sistema
- */
-public class Mensagens {
 
-    // ========== ÍCONES ==========
+ // Classe que centraliza todas as mensagens do sistema
+ public class Mensagens {
+
     public static final String ICONE_SUCESSO = "✓";
     public static final String ICONE_ERRO = "✗";
     public static final String ICONE_PROGRESSO = "⏳";
     public static final String ICONE_INFO = "ℹ️";
 
-    // ========== NAVEGAÇÃO ==========
     public static final String VOLTAR_MENU = "\nℹ️  Voltando ao menu principal...";
     public static final String PRESSIONE_ENTER = "\nPressione ENTER para continuar...";
 
@@ -26,7 +23,6 @@ public class Mensagens {
       
         """;
 
-    // ========== MENSAGENS DE ERRO - ENTRADA ==========
     public static final String ERRO_ENTRADA_NUMERICA = """
         
         ✗ Entrada inválida!
@@ -58,7 +54,6 @@ public class Mensagens {
         Verifique se o arquivo está no formato correto.
         """;
 
-    // ========== MENSAGENS DE ERRO - ID ==========
     public static final String ERRO_ID_INVALIDO = """
         
         ✗ ID inválido!
@@ -71,7 +66,6 @@ public class Mensagens {
         O ID deve ser um número inteiro.
         """;
 
-    // ========== MENSAGENS DE ERRO - CONSULTAS ==========
     public static final String ERRO_ESTATISTICAS_GERAIS = """
         
         ✗ Erro ao exibir estatísticas gerais.
@@ -93,7 +87,6 @@ public class Mensagens {
         Verifique se o ID está correto.
         """;
 
-    // ========== MENSAGENS DE ERRO - RELATÓRIOS ==========
     public static final String ERRO_RELATORIO_GERAL = """
         
         ✗ Erro ao exportar relatório geral.
@@ -113,20 +106,15 @@ public class Mensagens {
 
     public static final String PROGRESSO_IMPORTACAO = "\n⏳ Importando arquivo...";
 
-    // ========== MÉTODOS UTILITÁRIOS ==========
 
-    /**
-     * Pausa a operação e aguarda entrada do usuário
-     */
+     // Pausa a operação e aguarda entrada do usuário
+
     public static void pausaOperacao(Scanner scanner) {
         System.out.println("\n✅ Operação finalizada!");
         System.out.print("Digite qualquer número para voltar ao menu principal: ");
         scanner.nextLine();
     }
 
-    /**
-     * Retorna mensagem de erro formatada com nome do arquivo
-     */
     public static String erroFormatoArquivo(String nomeArquivo) {
         return """
         
@@ -136,16 +124,11 @@ public class Mensagens {
         """.formatted(nomeArquivo);
     }
 
-    /**
-     * Retorna mensagem de erro com detalhes técnicos
-     */
+
     public static String erroComDetalhes(String mensagemBase, String detalhes) {
         return mensagemBase + "Detalhes: " + detalhes + "\n";
     }
 
-    /**
-     * Retorna mensagem de erro de opção inválida com faixa
-     */
     public static String erroOpcaoInvalidaFaixa(int min, int max) {
         return """
         
@@ -154,15 +137,6 @@ public class Mensagens {
         """.formatted(min, max);
     }
 
-    /**
-     * Lê um número inteiro com validação automática
-     * Elimina código duplicado na MainView
-     *
-     * @param scanner Scanner para leitura
-     * @param min Valor mínimo aceito
-     * @param max Valor máximo aceito
-     * @return número válido dentro da faixa
-     */
     public static int lerNumeroValidado(Scanner scanner, int min, int max) {
         while (true) {
             try {
