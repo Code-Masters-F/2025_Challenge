@@ -7,6 +7,7 @@ import br.com.fiap.service.RelatorioService;
 import br.com.fiap.utils.Mensagens;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.InputMismatchException;
 
 
 import java.util.Scanner;
@@ -23,8 +24,16 @@ public class MainView {
         do {
             limparTela();
             System.out.println(MENU_PRINCIPAL);
-            opcao = scanner.nextInt();
-            scanner.nextLine();
+            try {
+                opcao = scanner.nextInt();
+                scanner.nextLine();
+            } catch (InputMismatchException e) {
+                scanner.nextLine(); // descarta entrada inválida
+                System.out.println(Mensagens.ERRO_ENTRADA_NUMERICA);
+                opcao = -1; // força cair no 'default' e continuar o loop
+                continue;
+            }
+
 
             switch (opcao) {
                 case 1:
@@ -61,8 +70,17 @@ public class MainView {
                     limparTela();
                     System.out.println(MENU_EXIBIR_ESTATISTICAS);
 
-                    int escolha = scanner.nextInt();
-                    scanner.nextLine();
+                    int escolha;
+                    try {
+                        escolha = scanner.nextInt();
+                        scanner.nextLine();
+                    } catch (InputMismatchException e) {
+                        scanner.nextLine();
+                        System.out.println(Mensagens.ERRO_ENTRADA_NUMERICA);
+                        System.out.println(Mensagens.ERRO_OPCAO_INVALIDA);
+                        break;
+                    }
+
 
                     switch (escolha) {
                         case 1 -> EstatisticaService.exibirGerais();
@@ -77,8 +95,15 @@ public class MainView {
                 case 3:
                     limparTela();
                     System.out.print("Digite o id do pequeno varejo: ");
-                    int idComercio = scanner.nextInt();
-                    scanner.nextLine();
+                    int idComercio;
+                    try {
+                        idComercio = scanner.nextInt();
+                        scanner.nextLine();
+                    } catch (InputMismatchException e) {
+                        scanner.nextLine();
+                        System.out.println(Mensagens.ERRO_ID_NUMERO);
+                        break; // volta ao menu
+                    }
 
                     if (idComercio <= 0) {
                         System.out.println(Mensagens.ERRO_ID_INVALIDO);
@@ -101,8 +126,17 @@ public class MainView {
                             0) Voltar
                             """);
 
-                    int tipo = scanner.nextInt();
-                    scanner.nextLine();
+                    int tipo;
+                    try {
+                        tipo = scanner.nextInt();
+                        scanner.nextLine();
+                    } catch (InputMismatchException e) {
+                        scanner.nextLine();
+                        System.out.println(Mensagens.ERRO_ENTRADA_NUMERICA);
+                        System.out.println(Mensagens.ERRO_OPCAO_INVALIDA);
+                        break;
+                    }
+
 
                     switch (tipo) {
                         case 1 -> RelatorioService.exportarRelatorioGeral();
@@ -114,11 +148,11 @@ public class MainView {
 
 
                 case 0:
-                    System.out.println("Saindo do sistema...");
+                    System.out.println(Mensagens.DESPEDIDA);
                     break;
 
                 default:
-                    System.out.println("Opção inválida! Tente novamente.");
+                    System.out.println(Mensagens.ERRO_OPCAO_INVALIDA);
             }
         } while (opcao != 0);
 
