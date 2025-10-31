@@ -3,6 +3,8 @@ package br.com.fiap.view;
 import br.com.fiap.service.EstatisticaService;
 import br.com.fiap.service.ImportacaoService;
 import br.com.fiap.service.RelatorioService;
+import br.com.fiap.utils.InputUtils;
+import br.com.fiap.utils.Mensagens;
 
 import java.util.Scanner;
 
@@ -18,43 +20,54 @@ public class MainView {
         do {
             limparTela();
             System.out.println(MENU_PRINCIPAL);
-            opcao = scanner.nextInt();
-            scanner.nextLine();
+
+            System.out.print("Sua escolha: ");
+            opcao = InputUtils.lerOpcao(scanner, 0, 4);
 
             switch (opcao) {
-                case 1:
+                case 1 -> {
                     limparTela();
-                    System.out.print("Digite o caminho do arquivo CSV (Ex: vendas.csv):   ");
-                    String caminho = scanner.nextLine().trim();
-                    ImportacaoService.importarCSV(caminho);
-                    break;
+                    String caminho = InputUtils.lerTextoNaoVazio(scanner,
+                            "Digite o caminho do arquivo CSV (Ex: vendas.csv): ");
+                    System.out.println(Mensagens.PROGRESSO_IMPORTACAO);
+                    try {
+                        ImportacaoService.importarCSV(caminho);
+                        System.out.println(Mensagens.SUCESSO_IMPORTACAO);
+                    } catch (Exception e) {
+                        System.out.println(Mensagens.erroComDetalhes(Mensagens.ERRO_IMPORTACAO, e.getMessage()));
+                    }
+                    InputUtils.pausar(scanner);
+                }
 
-                case 2:
+                case 2 -> {
                     limparTela();
                     System.out.println(MENU_EXIBIR_ESTATISTICAS);
 
-                    int escolha = scanner.nextInt();
-                    scanner.nextLine();
+                    System.out.print("Sua escolha: ");
+                    int escolha = InputUtils.lerOpcao(scanner, 0, 3);
 
                     switch (escolha) {
                         case 1 -> EstatisticaService.exibirGerais();
                         case 2 -> EstatisticaService.exibirPorProduto();
                         case 3 -> EstatisticaService.exibirPorRegiao();
-                        case 0 -> System.out.println("Voltando ao menu principal...");
-                        default -> System.out.println("Opção inválida!");
+                        case 0 -> System.out.println(Mensagens.VOLTAR_MENU);
+                        default -> System.out.println(Mensagens.ERRO_OPCAO_INVALIDA);
                     }
-                    break;
+                    InputUtils.pausar(scanner);
+                }
 
-                case 3:
+                case 3 -> {
                     limparTela();
-                    System.out.print("Digite o id do pequeno varejo: ");
-                    int idComercio = scanner.nextInt();
-                    scanner.nextLine();
+                    int idComercio = InputUtils.lerIntPositivo(scanner, "Digite o id do pequeno varejo: ");
+                    try {
+                        EstatisticaService.consultarComercioPorId(idComercio);
+                    } catch (Exception e) {
+                        System.out.println(Mensagens.erroComDetalhes(Mensagens.ERRO_CONSULTA_COMERCIO, e.getMessage()));
+                    }
+                    InputUtils.pausar(scanner);
+                }
 
-                    EstatisticaService.consultarComercioPorId(idComercio);
-                    break;
-
-                case 4:
+                case 4 -> {
                     System.out.println("""
                             === EXPORTAR RELATÓRIO ===
                             1) Relatório Geral
@@ -62,23 +75,26 @@ public class MainView {
                             0) Voltar
                             """);
 
-                    int tipo = scanner.nextInt();
-                    scanner.nextLine();
+                    System.out.print("Sua escolha: ");
+                    int tipo = InputUtils.lerOpcao(scanner, 0, 2);
 
                     switch (tipo) {
                         case 1 -> RelatorioService.exportarRelatorioGeral();
                         case 2 -> RelatorioService.exportarRelatorioPorComercio(scanner);
-                        case 0 -> System.out.println("Voltando ao menu principal...");
-                        default -> System.out.println("Opção inválida!");
+                        case 0 -> System.out.println(Mensagens.VOLTAR_MENU);
+                        default -> System.out.println(Mensagens.ERRO_OPCAO_INVALIDA);
                     }
-                    break;
+                    InputUtils.pausar(scanner);
+                }
 
-                case 0:
-                    System.out.println("Saindo do sistema...");
-                    break;
+                case 0 -> {
+                    System.out.println(Mensagens.DESPEDIDA);
+                }
 
-                default:
-                    System.out.println("Opção inválida! Tente novamente.");
+                default -> {
+                    System.out.println(Mensagens.ERRO_OPCAO_INVALIDA);
+                    InputUtils.pausar(scanner);
+                }
             }
         } while (opcao != 0);
 
