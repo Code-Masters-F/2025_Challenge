@@ -68,10 +68,11 @@ public class MainView {
                         case 1 -> EstatisticaService.exibirGerais();
                         case 2 -> EstatisticaService.exibirPorProduto();
                         case 3 -> EstatisticaService.exibirPorRegiao();
-                        case 0 -> System.out.println("Voltando ao menu principal...");
-                        default -> System.out.println("Opção inválida!");
+                        case 0 -> System.out.println(Mensagens.VOLTAR_MENU);
+                        default -> System.out.println(Mensagens.ERRO_OPCAO_INVALIDA);
                     }
                     break;
+
 
                 case 3:
                     limparTela();
@@ -79,8 +80,18 @@ public class MainView {
                     int idComercio = scanner.nextInt();
                     scanner.nextLine();
 
-                    EstatisticaService.consultarComercioPorId(idComercio);
+                    if (idComercio <= 0) {
+                        System.out.println(Mensagens.ERRO_ID_INVALIDO);
+                        break;
+                    }
+
+                    try {
+                        EstatisticaService.consultarComercioPorId(idComercio);
+                    } catch (Exception e) {
+                        System.out.println(Mensagens.ERRO_CONSULTA_COMERCIO);
+                    }
                     break;
+
 
                 case 4:
                     System.out.println("""
@@ -96,10 +107,11 @@ public class MainView {
                     switch (tipo) {
                         case 1 -> RelatorioService.exportarRelatorioGeral();
                         case 2 -> RelatorioService.exportarRelatorioPorComercio(scanner);
-                        case 0 -> System.out.println("Voltando ao menu principal...");
-                        default -> System.out.println("Opção inválida!");
+                        case 0 -> System.out.println(Mensagens.VOLTAR_MENU);
+                        default -> System.out.println(Mensagens.ERRO_OPCAO_INVALIDA);
                     }
                     break;
+
 
                 case 0:
                     System.out.println("Saindo do sistema...");
