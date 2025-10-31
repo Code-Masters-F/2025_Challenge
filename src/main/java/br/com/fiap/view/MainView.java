@@ -4,6 +4,9 @@ import br.com.fiap.service.EstatisticaService;
 import br.com.fiap.service.ImportacaoService;
 import br.com.fiap.service.RelatorioService;
 
+import br.com.fiap.utils.Mensagens;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 
 import java.util.Scanner;
@@ -28,8 +31,31 @@ public class MainView {
                     limparTela();
                     System.out.print("Digite o caminho do arquivo CSV (Ex: vendas.csv):   ");
                     String caminho = scanner.nextLine().trim();
-                    ImportacaoService.importarCSV(caminho);
+
+                    if (caminho.isEmpty()) {
+                        System.out.println(Mensagens.ERRO_CAMINHO_VAZIO);
+                        break;
+                    }
+
+                    if (!caminho.toLowerCase().endsWith(".csv")) {
+                        System.out.println(Mensagens.erroFormatoArquivo(caminho));
+                        break;
+                    }
+
+                    if (!Files.exists(Paths.get(caminho))) {
+                        System.out.println("✗ Arquivo não encontrado em: " + Paths.get(caminho).toAbsolutePath());
+                        break;
+                    }
+
+                    System.out.println(Mensagens.PROGRESSO_IMPORTACAO);
+                    try {
+                        ImportacaoService.importarCSV(caminho);
+                        System.out.println(Mensagens.SUCESSO_IMPORTACAO);
+                    } catch (Exception e) {
+                        System.out.println(Mensagens.erroComDetalhes(Mensagens.ERRO_IMPORTACAO, e.getMessage()));
+                    }
                     break;
+
 
                 case 2:
                     limparTela();
