@@ -37,36 +37,10 @@ public class MainView {
             switch (opcao) {
                 case 1:
                     limparTela();
-                    System.out.print("Digite o caminho do arquivo CSV (Ex: vendas.csv): ");
+                    System.out.print("Digite o caminho do arquivo CSV (Ex: vendas.csv):  ");
                     String caminho = scanner.nextLine().trim();
-
-                    // Validações
-                    if (caminho.isEmpty()) {
-                        System.out.println(Mensagens.ERRO_CAMINHO_VAZIO);
-                        Mensagens.pausaOperacao(scanner);
-                        break;
-                    }
-
-                    if (!caminho.toLowerCase().endsWith(".csv")) {
-                        System.out.println(Mensagens.erroFormatoArquivo(caminho));
-                        Mensagens.pausaOperacao(scanner);
-                        break;
-                    }
-
-                    if (!Files.exists(Paths.get(caminho))) {
-                        System.out.println("✗ Arquivo não encontrado em: " + Paths.get(caminho).toAbsolutePath());
-                        Mensagens.pausaOperacao(scanner);
-                        break;
-                    }
-
-                    System.out.println(Mensagens.PROGRESSO_IMPORTACAO);
-                    try {
-                        ImportacaoService.importarCSV(caminho);
-                        System.out.println(Mensagens.SUCESSO_IMPORTACAO);
-                    } catch (Exception e) {
-                        System.out.println(Mensagens.erroComDetalhes(Mensagens.ERRO_IMPORTACAO, e.getMessage()));
-                    }
-                    Mensagens.pausaOperacao(scanner);
+                    System.out.println(System.lineSeparator() + "Importando...");
+                    ImportacaoService.importarCSV(caminho);
                     break;
 
                 case 2:
