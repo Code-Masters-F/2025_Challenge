@@ -35,10 +35,8 @@ O menu principal oferece as seguintes opções:
 * **Descrição:** Processa os dados importados e exibe indicadores como total de vendas, top produtos e tendências.
 * **Submenu de Estatísticas**:
     * 1) Estatísticas gerais (todas as vendas)
-    * 2) Estatísticas por comércio
-    * 3) Estatísticas por produto
-    * 4) Estatísticas por região (cidade/estado)
-    * 5) Tendências de crescimento
+    * 2) Estatísticas por produto
+    * 3) Estatísticas por região (cidade/estado)
     * 0) Voltar ao menu principal
 
 ### 3) Consultar por ID de comércio
@@ -56,27 +54,34 @@ O menu principal oferece as seguintes opções:
 
 O sistema consiste em duas tabelas principais para armazenar os dados de comércios e suas respectivas vendas.
 
-### Tabela: Pequeno-Varejo
+### Tabela: PequenoVarejo
 
-| Campo | Tipo | Descrição |
-| :--- | :--- | :--- |
-| id | int | Identificador único do comércio |
-| nome | String | Nome da loja |
-| CNPJ | String | CNPJ da loja |
-| Endereco | String | Cidade e a abreviação estado |
+| Campo    | Tipo                                | Descrição              |
+| -------- | ----------------------------------- | ---------------------- |
+| id       | NUMBER(10) **IDENTITY PRIMARY KEY** | Gerado automaticamente |
+| nome     | VARCHAR2(255)                       | Nome da loja           |
+| cnpj     | VARCHAR2(18)                        | CNPJ da loja           |
+| endereco | VARCHAR2(500)                       | Endereço completo      |
+| cidade   | VARCHAR2(100)                       | Cidade                 |
+| estado   | VARCHAR2(50)                        | Estado                 |
+| cep      | VARCHAR2(10)                        | CEP                    |
+
+
 
 
 ### Tabela: Venda
 
-| Campo | Tipo | Descrição |
-| :--- | :--- | :--- |
-| id | int | Identificador único da venda |
-| id\_varejo | int | Chave estrangeira que referencia o comércio |
-| produto | String | Nome do produto vendido |
-| preco | Numero | Preço unitário no momento da venda |
-| unidade_de_medida | String | Unidade que se mede a quantidade vendida (Unidade, Kg, L, ml ...) |
-| quantidade | int | Quantidade vendida em uma compra |
-| data\_hora | LocalDateTime | Data e hora da venda |
+| Campo             | Tipo                                | Descrição                       |
+| ----------------- | ----------------------------------- | ------------------------------- |
+| id                | NUMBER(10) **IDENTITY PRIMARY KEY** | Gerado automaticamente          |
+| id_varejo         | NUMBER(10)                          | FK → pequenoVarejo.id           |
+| nome_produto      | VARCHAR2(255)                       | Nome do produto                 |
+| tamanho_embalagem | NUMBER(10,2)                        | Peso ou volume                  |
+| preco_unitario    | NUMBER(10,2)                        | Preço unitário                  |
+| unidade_de_medida | VARCHAR2(50)                        | Unidade de medida               |
+| quantidade        | NUMBER(10,3)                        | Quantidade vendida              |
+| data_hora         | TIMESTAMP WITH TIME ZONE            | Data da venda (default = agora) |
+
 
 
 ## 5. Tecnologias Utilizadas
