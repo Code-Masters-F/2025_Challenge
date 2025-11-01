@@ -5,6 +5,7 @@ import br.com.fiap.dao.VendaDao;
 import br.com.fiap.model.PequenoVarejo;
 import br.com.fiap.model.UnidadeDeMedida;
 import br.com.fiap.model.Venda;
+import br.com.fiap.utils.Mensagens;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -24,23 +25,27 @@ public class ImportacaoService {
             + File.separator + "Sales Archive" + File.separator;
 
 
-    public static void importarCSV(String nomeArquivo) {
+    public static boolean importarCSV(String nomeArquivo) {
         String caminhoCompleto = BASE_PATH + nomeArquivo;
 
         File file = new File(caminhoCompleto);
         if (!file.exists() || file.isDirectory()) {
             System.out.println("Arquivo não encontrado em: " + caminhoCompleto);
-            return;
+            return false;
         }
 
         String nome = nomeArquivo.toLowerCase();
         if (nome.contains("comercio")) {
+            System.out.println(System.lineSeparator() + "Importando...");
             importarComercios(caminhoCompleto);
         } else if (nome.contains("venda")) {
+            System.out.println(System.lineSeparator() + "Importando...");
             importarVendas(caminhoCompleto);
         } else {
             System.out.println("Tipo de arquivo não reconhecido: " + nomeArquivo);
+            return false;
         }
+        return true;
     }
 
     private static void importarComercios(String caminho) {

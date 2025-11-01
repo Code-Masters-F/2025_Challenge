@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class RelatorioService {
@@ -96,8 +97,8 @@ public class RelatorioService {
             scanner.nextLine();
 
             final String SQL_COMERCIO = "SELECT nome, cnpj FROM pequenovarejo WHERE id = ?";
-            String nomeComercio = null;
-            String cnpj = null;
+            String nomeComercio;
+            String cnpj;
 
             try (PreparedStatement ps = conexao.prepareStatement(SQL_COMERCIO)) {
                 ps.setInt(1, idComercio);
@@ -227,19 +228,19 @@ public class RelatorioService {
             ORDER BY qtd DESC
             """;
 
-        try (PrintWriter writer = new PrintWriter(new FileWriter(nomeArquivo))) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(nomeArquivo));
+            PreparedStatement preparedStatement = conexao.prepareStatement(SQL);
+            ResultSet resultSet = preparedStatement.executeQuery()) {
 
             writer.println("Produto,Quantidade_Vendas,Faturamento");
 
-            try (PreparedStatement ps = conexao.prepareStatement(SQL);
-                 ResultSet rs = ps.executeQuery()) {
+            Locale localeUS = Locale.US;
 
-                while (rs.next()) {
-                    writer.printf("%s,%d,%.2f\n",
-                            escaparCSV(rs.getString("nome_produto")),
-                            rs.getInt("qtd"),
-                            rs.getDouble("total"));
-                }
+            while (resultSet.next()) {
+                writer.printf(localeUS, "%s,%d,%.2f\n",
+                        escaparCSV(resultSet.getString("nome_produto")),
+                        resultSet.getInt("qtd"),
+                        resultSet.getDouble("total"));
             }
         }
     }
@@ -358,8 +359,10 @@ public class RelatorioService {
                 ps.setInt(1, idComercio);
                 ResultSet rs = ps.executeQuery();
 
+                Locale localeUS = Locale.US;
+
                 while (rs.next()) {
-                    writer.printf("%s,%s,%d,%.2f\n",
+                    writer.printf(localeUS, "%s,%s,%d,%.2f\n",
                             escaparCSV(nomeComercio),
                             escaparCSV(rs.getString("nome_produto")),
                             rs.getInt("qtd"),
