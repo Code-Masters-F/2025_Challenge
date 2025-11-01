@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MercadoBI - Inteligência para seu negócio</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Tela de Login -->
+    <div id="login-screen" class="screen active">
+        <div class="container">
+            <div class="card">
+                <h1>MercadoBI</h1>
+                <p class="subtitle">Inteligência de dados para pequenos negócios</p>
+                
+                <form id="login-form" class="form">
+                    <div class="form-group">
+                        <label for="login-email">E-mail</label>
+                        <input type="email" id="login-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Senha</label>
+                        <input type="password" id="login-password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Entrar</button>
+                </form>
+                
+                <p class="link-text">Não tem conta? <a href="#" id="show-register">Cadastre-se</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tela de Cadastro -->
+    <div id="register-screen" class="screen">
+        <div class="container">
+            <div class="card">
+                <h1>Criar Conta</h1>
+                <p class="subtitle">Escolha seu perfil</p>
+                
+                <div class="profile-selector">
+                    <label class="profile-option">
+                        <input type="radio" name="profile" value="comercio" checked>
+                        <div class="profile-card">
+                            <span class="icon">🏪</span>
+                            <h3>Comércio</h3>
+                            <p>Dono de mercadinho, padaria ou loja</p>
+                        </div>
+                    </label>
+                    <label class="profile-option">
+                        <input type="radio" name="profile" value="industria">
+                        <div class="profile-card">
+                            <span class="icon">🏭</span>
+                            <h3>Indústria</h3>
+                            <p>Fabricante interessado em distribuição</p>
+                        </div>
+                    </label>
+                </div>
+                
+                <form id="register-form" class="form">
+                    <div class="form-group">
+                        <label for="register-name">Nome Completo</label>
+                        <input type="text" id="register-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-company">Nome da Empresa</label>
+                        <input type="text" id="register-company" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-cnpj">CNPJ</label>
+                        <input type="text" id="register-cnpj" placeholder="00.000.000/0000-00" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-email">E-mail</label>
+                        <input type="email" id="register-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-password">Senha</label>
+                        <input type="password" id="register-password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Criar Conta</button>
+                </form>
+                
+                <p class="link-text">Já tem conta? <a href="#" id="show-login">Faça login</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tela de Upload/Registro -->
+    <div id="upload-screen" class="screen">
+        <div class="container">
+            <div class="card">
+                <h1>Importar Dados</h1>
+                <p class="subtitle">Escolha como deseja adicionar suas informações</p>
+                
+                <div class="upload-options">
+                    <div class="upload-method active" id="csv-method">
+                        <h3>📄 Upload de CSV</h3>
+                        <p>Importe seus dados de vendas rapidamente</p>
+                        
+                        <div class="upload-area" id="drop-zone">
+                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="17 8 12 3 7 8"></polyline>
+                                <line x1="12" y1="3" x2="12" y2="15"></line>
+                            </svg>
+                            <p>Arraste seu arquivo CSV aqui</p>
+                            <span>ou</span>
+                            <label for="file-input" class="btn btn-secondary">Escolher arquivo</label>
+                            <input type="file" id="file-input" accept=".csv" hidden>
+                            <span class="file-info" id="file-info"></span>
+                        </div>
+                        
+                        <div class="csv-template">
+                            <p>💡 <strong>Formato esperado:</strong></p>
+                            <code>nomeComercio,nomeProduto,tamanhoEmbalagem,unidadeDeMedida,quantidade,precoUnitario,dataHora</code>
+                        </div>
+                    </div>
+                    
+                    <div class="upload-method" id="manual-method">
+                        <h3>✏️ Preenchimento Manual</h3>
+                        <p>Digite os dados individualmente</p>
+                        
+                        <form id="manual-form" class="form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="manual-comercio">Nome do Comércio</label>
+                                    <input type="text" id="manual-comercio" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="manual-produto">Produto</label>
+                                    <input type="text" id="manual-produto" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="manual-tamanho">Tamanho</label>
+                                    <input type="number" id="manual-tamanho" step="0.01">
+                                </div>
+                                <div class="form-group">
+                                    <label for="manual-unidade">Unidade</label>
+                                    <select id="manual-unidade" required>
+                                        <option value="G">Gramas (G)</option>
+                                        <option value="ML">Mililitros (ML)</option>
+                                        <option value="UNIDADE">Unidade</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="manual-quantidade">Quantidade</label>
+                                    <input type="number" id="manual-quantidade" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="manual-preco">Preço Unitário (R$)</label>
+                                    <input type="number" id="manual-preco" step="0.01" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="manual-data">Data e Hora</label>
+                                <input type="datetime-local" id="manual-data" required>
+                            </div>
+                            <button type="submit" class="btn btn-secondary">Adicionar Registro</button>
+                        </form>
+                        
+                        <div id="manual-entries"></div>
+                    </div>
+                </div>
+                
+                <div class="upload-actions">
+                    <button class="btn btn-secondary" id="toggle-method">Alternar método</button>
+                    <button class="btn btn-primary" id="process-data">Processar e Analisar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard BI -->
+    <div id="dashboard-screen" class="screen">
+        <nav class="navbar">
+            <div class="nav-brand">
+                <h2>MercadoBI</h2>
+                <span class="user-profile" id="user-profile">👤 Usuário</span>
+            </div>
+            <button class="btn btn-secondary btn-sm" id="logout">Sair</button>
+        </nav>
+        
+        <div class="dashboard-container">
+            <aside class="sidebar">
+                <div class="sidebar-menu">
+                    <a href="#" class="menu-item active" data-tab="overview">
+                        <span>📊</span> Visão Geral
+                    </a>
+                    <a href="#" class="menu-item" data-tab="products">
+                        <span>📦</span> Produtos
+                    </a>
+                    <a href="#" class="menu-item" data-tab="stores">
+                        <span>🏪</span> Comércios
+                    </a>
+                    <a href="#" class="menu-item" data-tab="insights">
+                        <span>💡</span> Insights IA
+                    </a>
+                </div>
+            </aside>
+            
+            <main class="dashboard-content">
+                <!-- Overview Tab -->
+                <div id="overview-tab" class="tab-content active">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <span class="stat-icon">💰</span>
+                            <div>
+                                <h3 id="stat-revenue">R$ 0,00</h3>
+                                <p>Receita Total</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-icon">📦</span>
+                            <div>
+                                <h3 id="stat-products">0</h3>
+                                <p>Produtos Vendidos</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-icon">🏪</span>
+                            <div>
+                                <h3 id="stat-stores">0</h3>
+                                <p>Comércios Ativos</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-icon">📈</span>
+                            <div>
+                                <h3 id="stat-avg">R$ 0,00</h3>
+                                <p>Ticket Médio</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-grid">
+                        <div class="chart-card">
+                            <h3>Vendas ao Longo do Tempo</h3>
+                            <canvas id="sales-timeline"></canvas>
+                        </div>
+                        <div class="chart-card">
+                            <h3>Top 5 Produtos</h3>
+                            <canvas id="top-products"></canvas>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Products Tab -->
+                <div id="products-tab" class="tab-content">
+                    <div class="section-header">
+                        <h2>Análise de Produtos</h2>
+                        <input type="text" id="product-search" placeholder="Buscar produto..." class="search-input">
+                    </div>
+                    
+                    <div class="chart-card">
+                        <h3>Distribuição por Categoria</h3>
+                        <canvas id="category-chart"></canvas>
+                    </div>
+                    
+                    <div class="table-container">
+                        <table id="products-table">
+                            <thead>
+                                <tr>
+                                    <th>Produto</th>
+                                    <th>Qtd. Vendida</th>
+                                    <th>Receita</th>
+                                    <th>Preço Médio</th>
+                                    <th>Comércios</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Stores Tab -->
+                <div id="stores-tab" class="tab-content">
+                    <div class="section-header">
+                        <h2>Desempenho por Comércio</h2>
+                        <select id="region-filter" class="filter-select">
+                            <option value="">Todas as regiões</option>
+                            <option value="SP">São Paulo</option>
+                            <option value="MG">Minas Gerais</option>
+                            <option value="PR">Paraná</option>
+                            <option value="RS">Rio Grande do Sul</option>
+                            <option value="PE">Pernambuco</option>
+                            <option value="SC">Santa Catarina</option>
+                        </select>
+                    </div>
+                    
+                    <div class="chart-card">
+                        <h3>Vendas por Estado</h3>
+                        <canvas id="state-chart"></canvas>
+                    </div>
+                    
+                    <div class="table-container">
+                        <table id="stores-table">
+                            <thead>
+                                <tr>
+                                    <th>Comércio</th>
+                                    <th>Cidade</th>
+                                    <th>Estado</th>
+                                    <th>Produtos</th>
+                                    <th>Receita</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Insights Tab -->
+                <div id="insights-tab" class="tab-content">
+                    <div class="section-header">
+                        <h2>Insights Inteligentes</h2>
+                        <span class="badge">✨ Powered by IA</span>
+                    </div>
+                    
+                    <div class="insights-container" id="insights-container">
+                        <!-- Insights serão inseridos via JS -->
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
