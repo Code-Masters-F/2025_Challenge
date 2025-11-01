@@ -2,7 +2,7 @@
 -- 🔹 RECRIAÇÃO COMPLETA DAS TABELAS
 -- ==========================================
 
--- ⚠️ Apaga se já existirem
+-- ⚠️ Apaga as tabelas se já existirem
 BEGIN
     EXECUTE IMMEDIATE 'DROP TABLE venda CASCADE CONSTRAINTS PURGE';
 EXCEPTION WHEN OTHERS THEN NULL;
