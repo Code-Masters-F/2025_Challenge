@@ -22,15 +22,23 @@ public class MainView {
             limparTela();
             System.out.println(MENU_PRINCIPAL);
 
-            // Validação de entrada
             try {
+                System.out.print("Escolha uma opção: ");  // garante que sempre aparece
                 opcao = scanner.nextInt();
                 scanner.nextLine();
             } catch (InputMismatchException e) {
                 scanner.nextLine();
                 System.out.println(Mensagens.ERRO_ENTRADA_NUMERICA);
-                Mensagens.pausaOperacao(scanner);
+                System.out.print("Pressione ENTER e tente novamente...");
+                scanner.nextLine();
                 opcao = -1;
+                continue;
+            }
+
+            if (opcao < 0 || opcao > 4) {
+                System.out.println(Mensagens.ERRO_OPCAO_INVALIDA);
+                System.out.print("Pressione ENTER e tente novamente...");
+                scanner.nextLine();
                 continue;
             }
 
@@ -131,7 +139,9 @@ public class MainView {
 
                 default:
                     System.out.println(Mensagens.ERRO_OPCAO_INVALIDA);
-                    Mensagens.pausaOperacao(scanner);
+                    System.out.print("Pressione ENTER e tente novamente...");
+                    scanner.nextLine();
+
             }
         } while (opcao != 0);
 
