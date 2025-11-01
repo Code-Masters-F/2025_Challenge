@@ -5,7 +5,7 @@
 SET SERVEROUTPUT ON;
 
 BEGIN
-    -- 1️⃣ Apagar todos os registros na ordem correta
+    -- 1️⃣ Apagar todos os registros na ordem correta teste
     DELETE FROM venda;
     DELETE FROM pequenoVarejo;
     COMMIT;

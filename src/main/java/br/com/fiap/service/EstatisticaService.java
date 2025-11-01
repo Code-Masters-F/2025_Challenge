@@ -102,6 +102,7 @@ public class EstatisticaService {
                             rs.getInt("total_vendido"),
                             rs.getDouble("faturamento"));
                 }
+                System.out.println();
 
                 if (!temResultados) {
                     System.out.println("""
@@ -155,6 +156,7 @@ public class EstatisticaService {
                             rs.getString("cidade"),
                             rs.getDouble("total"));
                 }
+                System.out.println();
 
                 if (!temResultados) {
                     System.out.println("""
